@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <com.github.tcking.giraffe.ui.ImageCroppingView
+        android:id="@+id/app_cropping_view"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <RelativeLayout
+        android:background="#999E9E9E"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp">
+
+        <ImageView
+            android:id="@+id/iv_rotate_left"
+            android:src="@drawable/ic_rotate_left_white_24dp"
+            android:layout_alignParentLeft="true"
+            android:padding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iv_rotate_right"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_rotate_right_white_24dp"
+            android:padding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:background="#999E9E9E"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp">
+
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:id="@+id/tv_cancel"
+            android:text="cancel"
+            android:padding="16dp"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:id="@+id/tv_ok"
+            android:text="ok"
+            android:padding="16dp"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+</RelativeLayout>
