@@ -170,7 +170,10 @@ public class PhotoHelper {
                     }
                 } else if (requestCode == REQUESTCODE_CHOOSEPHOTO) {
                     if (data != null) {
-                        File inputImage = new File(getFilePath(data.getData()));
+                        File inputImage = new File(data.getData().getPath());
+                        if (!inputImage.exists()) {
+                            inputImage=new File(getFilePath(data.getData()));
+                        }
                         tryCompress(inputImage);
                     } else {
                         callback.error(new Exception("data is null"));
@@ -187,12 +190,16 @@ public class PhotoHelper {
                 }
             }
         } catch (Exception e) {
+            Log.e(TAG, "onActivityResult error", e);
             callback.error(e);
         }
     }
 
     private void tryCompress(File tempFile) {
-        File outputFile=createImageFile();
+        if (!tempFile.exists()) {
+            throw new RuntimeException("image file not exists:"+tempFile.getAbsolutePath());
+        }
+        File outputFile = createImageFile();
         if (cropping) {
             compress(tempFile, outputFile, quality, context.getResources().getDisplayMetrics().widthPixels, 0, maxFileSizeKB);
             Intent intent = new Intent(context, AppImageCroppingActivity.class);
@@ -237,9 +244,9 @@ public class PhotoHelper {
 
             op.inJustDecodeBounds = false;
             Bitmap resizeBitmap = BitmapFactory.decodeFile(inputImage.getAbsolutePath(), op);
-//            if (autoRotate) {
-//                resizeBitmap=rotateBitmap(inputImage.getAbsolutePath(), resizeBitmap);
-//            }
+            if (autoRotate) {
+                resizeBitmap=rotateBitmap(inputImage.getAbsolutePath(), resizeBitmap);
+            }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             resizeBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
             if (maxFileSizeKB > 0) {
@@ -270,7 +277,7 @@ public class PhotoHelper {
         this.maxWidth=dip?db2px(_maxWidth):_maxWidth;
         return this;
     }
-
+    
     public int db2px(float dip){
         return (int) (dip * context.getResources().getDisplayMetrics().density + 0.5f);
     }
