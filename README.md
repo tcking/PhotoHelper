@@ -11,7 +11,7 @@ very easy to get a photo by specifing max with or max image file size in android
 
 ## more features:
 
-```
+``` java
    new PhotoHelper(activity) //create a helper instance
         .quality(80) //try compress image using the quality 80
         .maxWidth(120,true) //try scale image unless with < 120dp,default is screen width
@@ -33,7 +33,7 @@ very easy to get a photo by specifing max with or max image file size in android
 ```
   
 ## some util method:
-```
+``` java
 PhotoHelper.saveBitmap2File(Bitmap bitmap,File targetFile,int quality) //save bitmap to file
 PhotoHelper.getBitmap(File imageFile,int maxWidthInPx) //get Bitmap from a file and try scale image with max width
 PhotoHelper.rotateBitmap(Bitmap bitmap , int angle) //rotate image
