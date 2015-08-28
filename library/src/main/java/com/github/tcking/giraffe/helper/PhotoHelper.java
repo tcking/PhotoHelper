@@ -277,7 +277,7 @@ public class PhotoHelper {
         this.maxWidth=dip?db2px(_maxWidth):_maxWidth;
         return this;
     }
-    
+
     public int db2px(float dip){
         return (int) (dip * context.getResources().getDisplayMetrics().density + 0.5f);
     }
@@ -445,6 +445,9 @@ public class PhotoHelper {
         String filePath;
         String[] filePathColumn = {MediaStore.MediaColumns.DATA};
         Cursor cursor = context.getContentResolver().query(uri, filePathColumn, null, null, null);
+        if (cursor==null) {
+            throw new RuntimeException("can't get path of content:" + uri.toString());
+        }
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         filePath = cursor.getString(columnIndex);
