@@ -23,15 +23,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //1.get a helper instance
         photoHelper = new PhotoHelper(this)
-                .maxWidth(300, true)
-                .autoRotate(true)
-                .quality(80)
-                .cropping(true)
-                .maxFileSizeKB(90)
+                .maxWidth(300, true)// image max with 300dp
+                .autoRotate(true)// autoRotate according to exif information
+                .quality(80)//try compress image using the quality 80
+                .cropping(true)// cropping it after get a photo
+                .maxFileSizeKB(90)//try compress image unless file size < 90KB
                 .callback(new PhotoHelper.CallBack() {
                     @Override
                     public void done(File imageFile) {
+                        //set imageView
                         ImageView imageView = (ImageView) findViewById(R.id.iv_photo);
                         imageView.setImageBitmap(PhotoHelper.getBitmap(imageFile));
                         ((TextView) findViewById(R.id.tv_fileSize)).setText(String.format("file size:%s",
@@ -61,6 +63,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //2.important,don't forget to do this
         photoHelper.onActivityResult(requestCode,resultCode,data);
     }
 }
