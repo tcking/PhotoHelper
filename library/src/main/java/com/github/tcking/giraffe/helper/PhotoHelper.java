@@ -148,19 +148,11 @@ public class PhotoHelper {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createTempFile()));
-                if (fragment != null) {
-                    fragment.startActivityForResult(intent, REQUESTCODE_TAKEPHOTO);
-                } else {
-                    context.startActivityForResult(intent, REQUESTCODE_TAKEPHOTO);
-                }
+                startActivityForResult(intent, REQUESTCODE_TAKEPHOTO);
             } else {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-                if (fragment != null) {
-                    fragment.startActivityForResult(intent, REQUESTCODE_CHOOSEPHOTO);
-                } else {
-                    context.startActivityForResult(intent, REQUESTCODE_CHOOSEPHOTO);
-                }
+                startActivityForResult(intent, REQUESTCODE_CHOOSEPHOTO);
             }
         } catch (Exception e) {
             callback.error(e);
@@ -239,12 +231,21 @@ public class PhotoHelper {
             compress(tempFile, outputFile, quality, context.getResources().getDisplayMetrics().widthPixels, 0, maxFileSizeKB);
             Intent intent = new Intent(context, AppImageCroppingActivity.class);
             intent.putExtra("imageFile", outputFile);
-            context.startActivityForResult(intent, REQUESTCODE_CROPPING);
+            startActivityForResult(intent, REQUESTCODE_CROPPING);
         } else {
             compress(tempFile, outputFile, quality, maxWidth, maxHeight, maxFileSizeKB);
             callback.done(outputFile);
         }
     }
+
+    private void startActivityForResult(Intent intent, int requestCode) {
+        if (fragment != null) {
+            fragment.startActivityForResult(intent, requestCode);
+        } else {
+            context.startActivityForResult(intent,requestCode);
+        }
+    }
+
 
     private File createImageFile() {
         insureDirs();
