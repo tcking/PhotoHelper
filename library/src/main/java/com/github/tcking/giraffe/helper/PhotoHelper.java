@@ -9,8 +9,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.github.tcking.giraffe.ui.activity.AppImageCroppingActivity;
@@ -50,17 +53,19 @@ import java.util.UUID;
  */
 public class PhotoHelper {
     private static final String TAG = "PhotoHelper";
+    private static final String KEY_TEMPFILE = "com.github.tcking.giraffe.helper.PhotoHelper.tempFile";
 
     private static boolean autoRotate;
     private final Activity context;
+    private Fragment fragment;
     private String dir ="/giraffe/images";
     private final String FROM_CAMERA = "CAMERA";
     private final String FROM_GALLERY = "GALLERY";
     private String from= FROM_GALLERY;
     private int quality=80;
-    private final int REQUESTCODE_TAKEPHOTO = 1;
-    private final int REQUESTCODE_CHOOSEPHOTO = 2;
-    private final int REQUESTCODE_CROPPING = 3;
+    private final int REQUESTCODE_TAKEPHOTO = 6211;
+    private final int REQUESTCODE_CHOOSEPHOTO = 6212;
+    private final int REQUESTCODE_CROPPING = 6213;
     private File tempFile;
     private float maxWidth;
     private float maxHeight;
@@ -105,6 +110,28 @@ public class PhotoHelper {
         this.context=context;
     }
 
+    public PhotoHelper(Activity context,Bundle savedInstanceState) {
+        this.context=context;
+        recover(savedInstanceState);
+    }
+
+    private void recover(Bundle savedInstanceState) {
+        if (savedInstanceState!=null && !TextUtils.isEmpty(savedInstanceState.getString(KEY_TEMPFILE))) {
+            tempFile = new File(savedInstanceState.getString(KEY_TEMPFILE));
+        }
+    }
+
+    public PhotoHelper(Fragment fragment) {
+        this.context=fragment.getActivity();
+        this.fragment=fragment;
+    }
+
+    public PhotoHelper(Fragment fragment, Bundle savedInstanceState) {
+        this.context=fragment.getActivity();
+        this.fragment=fragment;
+        recover(savedInstanceState);
+    }
+
 
     public PhotoHelper quality(int quality) {
         this.quality=quality;
@@ -121,11 +148,19 @@ public class PhotoHelper {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createTempFile()));
-                context.startActivityForResult(intent, REQUESTCODE_TAKEPHOTO);
+                if (fragment != null) {
+                    fragment.startActivityForResult(intent, REQUESTCODE_TAKEPHOTO);
+                } else {
+                    context.startActivityForResult(intent, REQUESTCODE_TAKEPHOTO);
+                }
             } else {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-                context.startActivityForResult(intent, REQUESTCODE_CHOOSEPHOTO);
+                if (fragment != null) {
+                    fragment.startActivityForResult(intent, REQUESTCODE_CHOOSEPHOTO);
+                } else {
+                    context.startActivityForResult(intent, REQUESTCODE_CHOOSEPHOTO);
+                }
             }
         } catch (Exception e) {
             callback.error(e);
@@ -212,6 +247,7 @@ public class PhotoHelper {
     }
 
     private File createImageFile() {
+        insureDirs();
         return new File(home, UUID.randomUUID().toString()+".jpeg");
     }
 
@@ -302,7 +338,7 @@ public class PhotoHelper {
     }
 
     public static Bitmap getBitmap(File imageFile) {
-        return getBitmap(imageFile,0);
+        return getBitmap(imageFile, 0);
     }
 
     public static Bitmap getBitmap(File imageFile,int maxWidthInPx) {
@@ -341,6 +377,13 @@ public class PhotoHelper {
         from=FROM_GALLERY;
         doIt();
     }
+
+    public void onSaveInstanceState(Bundle outState) {
+        if (tempFile!=null) {
+            outState.putString(KEY_TEMPFILE,tempFile.getAbsolutePath());
+        }
+    }
+
 
     public interface CallBack{
         void done(File imageFile);

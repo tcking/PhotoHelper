@@ -1,7 +1,10 @@
 package com.github.tcking.giraffe.helper.exmaple;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 import com.github.tcking.giraffe.helper.PhotoHelper;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by tc(mytcking@gmail.com) on 15/8/20.
@@ -24,7 +28,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         //1.get a helper instance
-        photoHelper = new PhotoHelper(this)
+        photoHelper = new PhotoHelper(this,savedInstanceState)
                 .maxWidth(300, true)// image max with 300dp
                 .autoRotate(true)// autoRotate according to exif information
                 .quality(80)//try compress image using the quality 80
@@ -51,6 +55,15 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 if (v.getId() == R.id.btn_choosePhoto) {
                     photoHelper.cropping(false).choosePhoto();
+                }else if (v.getId() == R.id.btn_test) {
+//                    photoHelper.cropping(false).choosePhoto();
+                    WifiManager wifiManager=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+                    wifiManager.startScan();
+                    List<ScanResult> scanResults = wifiManager.getScanResults();
+                    for (int i = 0; i < scanResults.size(); i++) {
+                        ScanResult scanResult = scanResults.get(i);
+                        System.out.println("======"+scanResult.toString());
+                    }
                 } else {
                     photoHelper.takePhoto();
                 }
@@ -58,6 +71,15 @@ public class MainActivity extends Activity {
         };
         findViewById(R.id.btn_choosePhoto).setOnClickListener(clickListener);
         findViewById(R.id.btn_takePhoto).setOnClickListener(clickListener);
+        findViewById(R.id.btn_test).setOnClickListener(clickListener);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (photoHelper!=null) {
+            photoHelper.onSaveInstanceState(outState);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
