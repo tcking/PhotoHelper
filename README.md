@@ -7,7 +7,9 @@ very easy to get a photo by specifing max with or max image file size in android
 
 1.create a helper instance and set callback then call `takePhoto()` or `choosePhoto()`: `new PhotoHelper(activity).callback(...).takePhoto()`;
 
-2.call `photoHelper.onActivityResult` in Activity or fragment `onActivityResult` method,**never forget to do this**;
+2.call `photoHelper.onSaveInstanceState` in Activity or fragment `onSaveInstanceState` method,**never forget to do this**;
+
+3.call `photoHelper.onActivityResult` in Activity or fragment `onActivityResult` method,**never forget to do this**;
 
 ## more features:
 

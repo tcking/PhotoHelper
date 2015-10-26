@@ -77,6 +77,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (photoHelper!=null) {
+            //2.important,when taking photo,behind activity(fragment) maybe killed
             photoHelper.onSaveInstanceState(outState);
         }
         super.onSaveInstanceState(outState);
@@ -85,7 +86,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //2.important,don't forget to do this
+        //3.important,don't forget to do this
         photoHelper.onActivityResult(requestCode,resultCode,data);
     }
 }
