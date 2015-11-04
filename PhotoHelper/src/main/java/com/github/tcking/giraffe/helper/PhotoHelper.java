@@ -152,6 +152,7 @@ public class PhotoHelper {
             } else {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createTempFile()));
                 startActivityForResult(intent, REQUESTCODE_CHOOSEPHOTO);
             }
         } catch (Exception e) {
@@ -197,13 +198,19 @@ public class PhotoHelper {
                     }
                 } else if (requestCode == REQUESTCODE_CHOOSEPHOTO) {
                     if (data != null) {
-                        File inputImage = new File(data.getData().getPath());
-                        if (!inputImage.exists()) {
-                            inputImage=new File(getFilePath(data.getData()));
+                        if (data.getData() != null) {
+                            File inputImage = new File(data.getData().getPath());
+                            if (!inputImage.exists()) {
+                                inputImage = new File(getFilePath(data.getData()));
+                            }
+                            tryCompress(inputImage);
+                        } else {
+
                         }
-                        tryCompress(inputImage);
+                    }else if (tempFile != null && tempFile.exists()) {
+                        tryCompress(tempFile);
                     } else {
-                        callback.error(new Exception("data is null"));
+                        callback.error(new Exception("tempFile is not exists"));
                     }
                 }else if (requestCode == REQUESTCODE_CROPPING) {
                     if (data != null) {
