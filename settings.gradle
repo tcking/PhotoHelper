@@ -1,1 +1,1 @@
-include ':photohelper', ':exmaple'
+include ':PhotoHelper', ':exmaple'
