@@ -9,8 +9,8 @@ very easy to get a photo by specifing max with or max image file size in android
  2. add `compile 'com.github.tcking.PhotoHelper:library:1.1'` to your app build file
 
 ## clone project
- 1. git clone https://github.com/tcking/GiraffePlayer.git
- 2. android studio->file->New->Import module->select `giraffeplayer`
+ 1. git clone https://github.com/tcking/PhotoHelper.git
+ 2. android studio->file->New->Import module->select `library`
 
 # how to use([**example code**](https://github.com/tcking/PhotoHelper/blob/master/exmaple/src/main/java/com/github/tcking/giraffe/helper/exmaple/MainActivity.java)):
 
