@@ -3,7 +3,16 @@ very easy to get a photo by specifing max with or max image file size in android
 
 ![Sample Image](https://github.com/tcking/PhotoHelper/raw/master/ScreenShots/screenShot1.gif "ScreenShots")
 
-## how to use([**example code**](https://github.com/tcking/PhotoHelper/blob/master/exmaple/src/main/java/com/github/tcking/giraffe/helper/exmaple/MainActivity.java)):
+# how to import library
+## using gradle
+ 1. add `maven { url "https://jitpack.io" }` to your root project build file allprojects->repositories
+ 2. add `compile 'com.github.tcking.PhotoHelper:library:1.1'` to your app build file
+
+## clone project
+ 1. git clone https://github.com/tcking/GiraffePlayer.git
+ 2. android studio->file->New->Import module->select `giraffeplayer`
+
+# how to use([**example code**](https://github.com/tcking/PhotoHelper/blob/master/exmaple/src/main/java/com/github/tcking/giraffe/helper/exmaple/MainActivity.java)):
 
 1.create a helper instance and set callback then call `takePhoto()` or `choosePhoto()`: `new PhotoHelper(activity).callback(...).takePhoto()`;
 
@@ -11,7 +20,8 @@ very easy to get a photo by specifing max with or max image file size in android
 
 3.call `photoHelper.onActivityResult` in Activity or fragment `onActivityResult` method,**never forget to do this**;
 
-## more features:
+
+# more features:
 
 ``` java
    new PhotoHelper(activity) //create a helper instance
@@ -34,7 +44,7 @@ very easy to get a photo by specifing max with or max image file size in android
         .takePhoto() //or choosePhoto(), just do the job for you
 ```
   
-## some util method:
+# some util method:
 ``` java
 PhotoHelper.saveBitmap2File(Bitmap bitmap,File targetFile,int quality) //save bitmap to file
 PhotoHelper.getBitmap(File imageFile,int maxWidthInPx) //get Bitmap from a file and try scale image with max width
