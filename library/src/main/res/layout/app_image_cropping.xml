@@ -8,8 +8,8 @@
     <com.github.tcking.giraffe.ui.ImageCroppingView
         android:id="@+id/app_cropping_view"
         android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         />
 
     <RelativeLayout
