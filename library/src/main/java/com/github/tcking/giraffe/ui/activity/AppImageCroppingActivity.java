@@ -29,6 +29,7 @@ public class AppImageCroppingActivity extends Activity {
         setContentView(R.layout.app_image_cropping);
         imageFile = (File) getIntent().getSerializableExtra("imageFile");
         croppingView = (ImageCroppingView) findViewById(R.id.app_cropping_view);
+        croppingView.setCropFactor(getIntent().getFloatExtra("cropFactor",0.7f));
         bitmap = PhotoHelper.getBitmap(imageFile, getResources().getDisplayMetrics().widthPixels);
         croppingView.setImageBitmap(bitmap);
         View.OnClickListener clickListener = new View.OnClickListener() {

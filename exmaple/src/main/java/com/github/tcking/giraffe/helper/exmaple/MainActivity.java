@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
                 .autoRotate(true)// autoRotate according to exif information
                 .quality(80)//try compress image using the quality 80
                 .cropping(true)// cropping it after get a photo
+                .cropFactor(0.8f)// crop area factor
                 .maxFileSizeKB(150)//try compress image unless file size < 90KB
                 .callback(new PhotoHelper.CallBack() {
                     @Override

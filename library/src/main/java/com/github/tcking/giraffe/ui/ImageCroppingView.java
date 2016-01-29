@@ -66,6 +66,13 @@ public class ImageCroppingView extends ImageView {
     //
     private Matrix matrix, prevMatrix;
 
+    public void setCropFactor(float cropFactor) {
+        this.cropFactor = cropFactor;
+        invalidate();
+    }
+
+    private float cropFactor =0.7f;
+
     public static enum State { NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM };
     private State state;
 
@@ -954,7 +961,7 @@ public class ImageCroppingView extends ImageView {
         int y = this.getHeight();
         Paint paint = new Paint();
         paint.setColor(0xaa000000);
-        w=(float) (Math.min(x, y)*0.7);
+        w=(float) (Math.min(x, y)* cropFactor);
         x0=(x-w)/2;
         y0=(y-w)/2;
         float x1=x0+w,y1=y0;

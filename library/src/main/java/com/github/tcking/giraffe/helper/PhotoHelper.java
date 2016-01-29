@@ -58,6 +58,7 @@ public class PhotoHelper {
     private static boolean autoRotate;
     private final Activity context;
     private Fragment fragment;
+    private Float cropFactor=0.7f;
     private String dir ="/giraffe/images";
     private final String FROM_CAMERA = "CAMERA";
     private final String FROM_GALLERY = "GALLERY";
@@ -96,6 +97,11 @@ public class PhotoHelper {
 
     public PhotoHelper autoRotate(boolean autoRotate) {
         this.autoRotate=autoRotate;
+        return this;
+    }
+
+    public PhotoHelper cropFactor(Float cropFactor) {
+        this.cropFactor = cropFactor;
         return this;
     }
 
@@ -238,6 +244,7 @@ public class PhotoHelper {
             compress(tempFile, outputFile, quality, context.getResources().getDisplayMetrics().widthPixels, 0, maxFileSizeKB);
             Intent intent = new Intent(context, AppImageCroppingActivity.class);
             intent.putExtra("imageFile", outputFile);
+            intent.putExtra("cropFactor", cropFactor);
             startActivityForResult(intent, REQUESTCODE_CROPPING);
         } else {
             compress(tempFile, outputFile, quality, maxWidth, maxHeight, maxFileSizeKB);
@@ -492,11 +499,14 @@ public class PhotoHelper {
      * @param uri The content:// URI to find the file path from
      * @return the file path as a string
      */
-    private String getFilePath(Uri uri) {
+    public  String getFilePath(Uri uri) {
+        if (uri.getScheme().equals("file")) {
+            return uri.getPath();
+        }
         String filePath;
         String[] filePathColumn = {MediaStore.MediaColumns.DATA};
         Cursor cursor = context.getContentResolver().query(uri, filePathColumn, null, null, null);
-        if (cursor==null) {
+        if (cursor == null) {
             throw new RuntimeException("can't get path of content:" + uri.toString());
         }
         cursor.moveToFirst();
