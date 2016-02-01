@@ -4,11 +4,11 @@ very easy to get a photo by specifing max with or max image file size in android
 ![Sample Image](https://github.com/tcking/PhotoHelper/raw/master/ScreenShots/screenShot1.gif "ScreenShots")
 
 # how to import library
-## using gradle
+## method 1: using gradle
  1. add `maven { url "https://jitpack.io" }` to your root project build file allprojects->repositories
  2. add `compile 'com.github.tcking.PhotoHelper:library:1.1'` to your app build file
 
-## clone project
+## method 2: clone project
  1. git clone https://github.com/tcking/PhotoHelper.git
  2. android studio->file->New->Import module->select `library`
 
@@ -25,12 +25,13 @@ very easy to get a photo by specifing max with or max image file size in android
 
 ``` java
    new PhotoHelper(activity) //create a helper instance
-        .quality(80) //try compress image using the quality 80
-        .maxWidth(120,true) //try scale image unless with < 120dp,default is screen width
-        .maxFileSizeKB(80) //try compress image unless file size < 80KB
-        .cropping(true) //cropping the target image
+        .quality(80) //try compress image using the quality 80 图片的质量,100为最高
+        .maxWidth(120,true) //try scale image unless with < 120dp,default is screen width 图片的最大宽度
+        .maxFileSizeKB(80) //try compress image unless file size < 80KB 图片文件的最大值,如果文件大于此值会进行压缩(牺牲清晰度)
+        .cropping(true) //cropping the target image 是否进行剪裁,如果为true则选择完图片后会进入剪裁页
+        .cropFactor(0.8f)// crop area factor 剪裁边框的大小,0.8表示宽的80%
         .autoRotate(true) //try rotate the image according to photo exif information (some samsung devices need to rotate)
-        .callback(new PhotoHelper.CallBack() { // set callback
+        .callback(new PhotoHelper.CallBack() { // set callback 完成后的回调
                     @Override
                     public void done(File imageFile) {
                         //do something

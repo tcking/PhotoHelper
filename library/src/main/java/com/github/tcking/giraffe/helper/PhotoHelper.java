@@ -156,10 +156,9 @@ public class PhotoHelper {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createTempFile()));
                 startActivityForResult(intent, REQUESTCODE_TAKEPHOTO);
             } else {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createTempFile()));
-                startActivityForResult(intent, REQUESTCODE_CHOOSEPHOTO);
+                Intent chooser = Intent.createChooser(new Intent(Intent.ACTION_PICK).setType("image/*"), "choose an image");
+                chooser.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createTempFile()));
+                startActivityForResult(chooser, REQUESTCODE_CHOOSEPHOTO);
             }
         } catch (Exception e) {
             callback.error(e);
