@@ -6,7 +6,7 @@ very easy to get a photo by specifing max with or max image file size in android
 # how to import library
 ## method 1: using gradle
  1. add `maven { url "https://jitpack.io" }` to your root project build file allprojects->repositories
- 2. add `compile 'com.github.tcking.PhotoHelper:library:1.1'` to your app build file
+ 2. add `compile 'com.github.tcking.PhotoHelper:library:1.2'` to your app build file
 
 ## method 2: clone project
  1. git clone https://github.com/tcking/PhotoHelper.git
